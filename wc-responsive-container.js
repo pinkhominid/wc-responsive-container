@@ -1,17 +1,26 @@
+/**
+ * wc-responsive-container
+ * by pinkhominid
+ * MIT Licensed
+ *
+ * See Philip Walton's Responsive Components: a Solution to the Container Queries Problem
+ * https://philipwalton.com/articles/responsive-components-a-solution-to-the-container-queries-problem/
+ */
+
 // Create a single observer for all <wc-responsive-container> elements.
 const ro = new ResizeObserver(entries => {
-    var defaultBreakpoints = {SM: 384, MD: 576, LG: 768, XL: 960};
+    var defaultBreakpoints = {sm: 384, md: 576, lg: 768, xl: 960};
 
-    entries.forEach(function(entry) {
+    entries.forEach(entry => {
       // If breakpoints are defined on the observed element,
       // use them. Otherwise use the defaults.
-      var breakpoints = entry.target.dataset.breakpoints ?
-          JSON.parse(entry.target.dataset.breakpoints) :
+      const breakpoints = entry.target.getAttribute('breaks') ?
+          JSON.parse(entry.target.getAttribute('breaks')) :
           defaultBreakpoints;
 
       // Update the matching breakpoints on the observed element.
-      Object.keys(breakpoints).forEach(function(breakpoint) {
-        var minWidth = breakpoints[breakpoint];
+      Object.keys(breakpoints).forEach(breakpoint => {
+        const minWidth = breakpoints[breakpoint];
         if (entry.contentRect.width >= minWidth) {
           entry.target.classList.add(breakpoint);
         } else {
@@ -23,7 +32,7 @@ const ro = new ResizeObserver(entries => {
 
 class ResponsiveContainerElement extends HTMLElement {
   connectedCallback() {
-    this.style.display = 'block';
+    if (this.style.display.startsWith('inline')) this.style.display = 'block';
     ro.observe(this);
   }
   disconnectedCallback() {

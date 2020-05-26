@@ -1,0 +1,31 @@
+{
+  "name": "wc-responsive-container",
+  "version": "0.0.0",
+  "description": "Web component to allow an author to control styling based on the size of a containing element rather than the size of the user’s viewport",
+  "main": "wc-responsive-container.js",
+  "module": "wc-responsive-container.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pinkhominid/wc-responsive-container.git"
+  },
+  "keywords": [
+    "webcomponents",
+    "web",
+    "component",
+    "wc",
+    "container",
+    "media",
+    "queries",
+    "query",
+    "responsive",
+    "layout"
+  ],
+  "author": "pinkhominid <pinkhominid@birdbomb.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pinkhominid/wc-responsive-container/issues"
+  },
+  "homepage": "https://github.com/pinkhominid/wc-responsive-container#readme"
+}
