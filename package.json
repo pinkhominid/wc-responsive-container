@@ -1,6 +1,6 @@
 {
   "name": "wc-responsive-container",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Web component to allow an author to control styling based on the size of a containing element rather than the size of the user’s viewport",
   "main": "wc-responsive-container.js",
   "module": "wc-responsive-container.js",
