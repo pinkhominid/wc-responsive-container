@@ -1,8 +1,17 @@
 <style>
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   article {
-    width: 85%;
-    height: 85vh;
-    margin: 50px auto;
+    width: 76%;
+    height: 500px;
   }
   section {
     background-color: lightgray;
@@ -10,36 +19,32 @@
     padding: 2rem;
   }
   wc-responsive-container {
-    box-sizing: border-box;
     min-height: 100%;
     display: grid;
     grid-gap: 2rem;
     padding: 2rem;
     outline: 3px dotted skyblue;
   }
-  wc-responsive-container * {
-    box-sizing: inherit;
-  }
-  wc-responsive-container.lg {
+  wc-responsive-container.md {
     grid-template-columns: repeat(3, 1fr);
   }
-  wc-responsive-container.lg > [lg-colspan="2"] {
+  wc-responsive-container.md > [md-colspan="2"] {
     grid-column: span 2;
   }
-  wc-responsive-container.lg > [lg-colspan="3"] {
+  wc-responsive-container.md > [md-colspan="3"] {
     grid-column: span 3;
   }
 </style>
-<script type="module" src="./wc-responsive-container.js"></script>
+<script type="module" src="../wc-responsive-container.js"></script>
 <article>
   <wc-responsive-container breaks='{"sm": 300, "md": 500, "lg": 700, "xl": 900}'>
-    <section lg-colspan="1">
+    <section md-colspan="1">
       1
     </section>
-    <section lg-colspan="2">
+    <section md-colspan="2">
       2
     </section>
-    <section lg-colspan="3">
+    <section md-colspan="3">
       3
     </section>
   </wc-responsive-container>
