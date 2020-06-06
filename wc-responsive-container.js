@@ -38,8 +38,8 @@ export const ResponsiveElementMixin = (superclass) =>
       ro.observe(this);
     }
     disconnectedCallback() {
-      if(super.disconnectedCallback) super.disconnectedCallback();
       ro.unobserve(this);
+      if(super.disconnectedCallback) super.disconnectedCallback();
     }
   };
 
