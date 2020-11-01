@@ -9,7 +9,9 @@
   "files": [
     "/wc-responsive-container.js"
   ],
-  "scripts": {},
+  "scripts": {
+    "start": "wds -o example"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pinkhominid/wc-responsive-container.git"
@@ -31,5 +33,8 @@
   "bugs": {
     "url": "https://github.com/pinkhominid/wc-responsive-container/issues"
   },
-  "homepage": "https://github.com/pinkhominid/wc-responsive-container#readme"
+  "homepage": "https://github.com/pinkhominid/wc-responsive-container#readme",
+  "devDependencies": {
+    "@web/dev-server": "0.0.17"
+  }
 }
