@@ -6,39 +6,51 @@
  * See Philip Walton's Responsive Components: a Solution to the Container Queries Problem
  * https://philipwalton.com/articles/responsive-components-a-solution-to-the-container-queries-problem/
  */
+var defaultBreakpoints = {sm: 384, md: 576, lg: 768, xl: 960};
 
-// Create a single observer for all responsive elements
-const ro = new ResizeObserver(entries => {
-    var defaultBreakpoints = {sm: 384, md: 576, lg: 768, xl: 960};
+const roPropName = '__wc-responsive-container-ro';
 
-    entries.forEach(entry => {
-      // If breakpoints are defined on the observed element,
-      // use them. Otherwise use the defaults.
-      const breakpoints = entry.target.getAttribute('breaks') ?
-          JSON.parse(entry.target.getAttribute('breaks')) :
-          defaultBreakpoints;
+const debounce = fn => {
+  let id;
+  return (...args) => {
+    if(id != null) window.cancelAnimationFrame(id);
 
-      // Update the matching breakpoints on the observed element.
-      Object.keys(breakpoints).forEach(breakpoint => {
-        const minWidth = breakpoints[breakpoint];
-        if (entry.contentRect.width >= minWidth) {
-          entry.target.classList.add(breakpoint);
-        } else {
-          entry.target.classList.remove(breakpoint);
-        }
-      });
+    id = window.requestAnimationFrame(() => {
+      fn.apply(this, args);
+      id = null;
     });
-});
+  };
+};
+
+const onResize = entries => {
+  entries.forEach(entry => {
+    // If breakpoints are defined on the observed element,
+    // use them. Otherwise use the defaults.
+    const breaksAttr = entry.target.getAttribute('breaks');
+    const breakpoints = breaksAttr
+      ? JSON.parse(breaksAttr)
+      : defaultBreakpoints;
+
+    // Update the matching breakpoints on the observed element.
+    Object.entries(breakpoints).forEach(([breakpoint, minWidth]) =>
+      entry.target.classList[entry.contentRect.width >= minWidth ? 'add' : 'remove'](breakpoint)
+    );
+  });
+};
 
 // Add responsive behavior to any element
 export const ResponsiveElementMixin = (superclass) =>
   class extends superclass {
     connectedCallback() {
       if(super.connectedCallback) super.connectedCallback();
-      ro.observe(this);
+
+      if (!this[roPropName])
+        this[roPropName] = new ResizeObserver(debounce(onResize));
+
+      this[roPropName].observe(this);
     }
     disconnectedCallback() {
-      ro.unobserve(this);
+      this[roPropName].unobserve(this);
       if(super.disconnectedCallback) super.disconnectedCallback();
     }
   };
