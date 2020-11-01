@@ -1,0 +1,224 @@
+<style>
+  /* CSS Var defaults
+  :root {
+    --gap: 2rem;
+    --r1-min-ht: auto;
+    --r1-max-ht: 300px;
+    --r2-min-ht: 300px;
+    --r2-max-ht: auto;
+  }
+  */
+  body {
+    margin: 0;
+  }
+  article {
+    width: 85%;
+    height: 85vh;
+    margin: 50px auto;
+  }
+  section {
+    background-color: lightgray;
+    outline: 3px dotted tomato;
+    padding: var(--gap, 2rem);
+  }
+  wc-responsive-container {
+    box-sizing: border-box;
+    min-height: 100%;
+    display: grid;
+    grid-gap: var(--gap, 2rem);
+    padding: var(--gap, 2rem);
+    outline: 3px dotted skyblue;
+  }
+  wc-responsive-container * {
+    box-sizing: inherit;
+  }
+  wc-responsive-container.sm[sm-tmpl~="r2"],
+  wc-responsive-container.md[md-tmpl~="r2"],
+  wc-responsive-container.lg[lg-tmpl~="r2"],
+  wc-responsive-container.xl[xl-tmpl~="r2"] {
+    grid-template-rows:
+      minmax(var(--r1-min-ht, auto), var(--r1-max-ht, 300px))
+      minmax(var(--r2-min-ht, 300px), var(--r2-max-ht, auto));
+  }
+  wc-responsive-container.sm[sm-tmpl~="c2"],
+  wc-responsive-container.md[md-tmpl~="c2"],
+  wc-responsive-container.lg[lg-tmpl~="c2"],
+  wc-responsive-container.xl[xl-tmpl~="c2"] {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  wc-responsive-container.sm[sm-tmpl~="c3"],
+  wc-responsive-container.md[md-tmpl~="c3"],
+  wc-responsive-container.lg[lg-tmpl~="c3"],
+  wc-responsive-container.xl[xl-tmpl~="c3"] {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  wc-responsive-container.sm > [sm-span~="r2"],
+  wc-responsive-container.md > [md-span~="r2"],
+  wc-responsive-container.lg > [lg-span~="r2"],
+  wc-responsive-container.xl > [xl-span~="r2"] {
+    grid-row: span 2;
+  }
+  wc-responsive-container.sm > [sm-span~="c2"],
+  wc-responsive-container.md > [md-span~="c2"],
+  wc-responsive-container.lg > [lg-span~="c2"],
+  wc-responsive-container.xl > [xl-span~="c2"] {
+    grid-column: span 2;
+  }
+  wc-responsive-container.sm > [sm-span~="c3"],
+  wc-responsive-container.md > [md-span~="c3"],
+  wc-responsive-container.lg > [lg-span~="c3"],
+  wc-responsive-container.xl > [xl-span~="c3"] {
+    grid-column: span 3;
+  }
+</style>
+<script type="module" src="../wc-responsive-container.js"></script>
+<body>
+  <article>
+    <wc-responsive-container lg-tmpl="r2 c2" breaks='{"sm": 300, "md": 500, "lg": 700, "xl": 900}'>
+      <section lg-span="r1 c1">
+        1
+      </section>
+      <section lg-span="r1 c1">
+        2
+      </section>
+      <section lg-span="r1 c1">
+        3
+      </section>
+      <section lg-span="r1 c1">
+        4
+      </section>
+    </wc-responsive-container>
+  </article>
+  <article>
+    <wc-responsive-container lg-tmpl="r2 c3" breaks='{"sm": 300, "md": 500, "lg": 700, "xl": 900}'>
+      <section lg-span="r1 c1">
+        1
+      </section>
+      <section lg-span="r1 c2">
+        2
+      </section>
+      <section lg-span="r1 c2">
+        3
+      </section>
+      <section lg-span="r1 c1">
+        4
+      </section>
+    </wc-responsive-container>
+  </article>
+  <article>
+    <wc-responsive-container lg-tmpl="r2 c2" breaks='{"sm": 300, "md": 500, "lg": 700, "xl": 900}'>
+      <section lg-span="r2 c2">
+        1
+      </section>
+    </wc-responsive-container>
+  </article>
+  <article>
+    <wc-responsive-container lg-tmpl="r2 c2" breaks='{"sm": 300, "md": 500, "lg": 700, "xl": 900}'>
+      <section lg-span="r1 c2">
+        1
+      </section>
+      <section lg-span="r1 c2">
+        2
+      </section>
+    </wc-responsive-container>
+  </article>
+  <article>
+    <wc-responsive-container lg-tmpl="r2 c2" breaks='{"sm": 300, "md": 500, "lg": 700, "xl": 900}'>
+      <section lg-span="r2 c1">
+        1
+      </section>
+      <section lg-span="r2 c1">
+        2
+      </section>
+    </wc-responsive-container>
+  </article>
+  <article>
+    <wc-responsive-container xl-tmpl="r2 c3" breaks='{"sm": 300, "md": 500, "lg": 700, "xl": 900}'>
+      <section xl-span="r1 c1">
+        1
+      </section>
+      <section xl-span="r1 c1">
+        2
+      </section>
+      <section xl-span="r1 c1">
+        3
+      </section>
+      <section xl-span="r1 c2">
+        4
+      </section>
+      <section xl-span="r1 c1">
+        5
+      </section>
+    </wc-responsive-container>
+  </article>
+  <article>
+    <wc-responsive-container lg-tmpl="r2 c3" breaks='{"sm": 300, "md": 500, "lg": 700, "xl": 900}'>
+      <section lg-span="r1 c1">
+        1
+      </section>
+      <section lg-span="r2 c2">
+        2
+      </section>
+      <section lg-span="r1 c1">
+        3
+      </section>
+    </wc-responsive-container>
+  </article>
+  <article>
+    <wc-responsive-container lg-tmpl="r2 c3" breaks='{"sm": 300, "md": 500, "lg": 700, "xl": 900}'>
+      <section lg-span="r1 c1">
+        1
+      </section>
+      <section lg-span="r1 c2">
+        2
+      </section>
+      <section lg-span="r1 c3">
+        3
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+        <p>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </p>
+      </section>
+    </wc-responsive-container>
+  </article>
+</body>
