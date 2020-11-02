@@ -59,7 +59,10 @@ npm i wc-responsive-container
     grid-column: span 3;
   }
 </style>
-<script type="module" src="./node_modules/wc-responsive-container/wc-responsive-container.js"></script>
+<script type="module">
+  // Using @web/dev-server or your favorite bundler...
+  import 'wc-responsive-container';
+</script>
 <article>
   <wc-responsive-container breaks='{"sm": 300, "md": 500, "lg": 700, "xl": 900}'>
     <section md-colspan="1">
