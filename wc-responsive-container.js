@@ -6,9 +6,6 @@
  * See Philip Walton's Responsive Components: a Solution to the Container Queries Problem
  * https://philipwalton.com/articles/responsive-components-a-solution-to-the-container-queries-problem/
  */
-var defaultBreakpoints = {sm: 384, md: 576, lg: 768, xl: 960};
-
-const roPropName = '__wc-responsive-container-ro';
 
 const debounce = fn => {
   let id;
@@ -22,13 +19,24 @@ const debounce = fn => {
   };
 };
 
+// https://www.30secondsofcode.org/blog/s/javascript-memoization
+const memoize = fn => new Proxy(fn, {
+  cache: new Map(),
+  apply (target, thisArg, argsList) {
+    let cacheKey = argsList.toString();
+    if(!this.cache.has(cacheKey))
+      this.cache.set(cacheKey, target.apply(thisArg, argsList));
+    return this.cache.get(cacheKey);
+  }
+});
+
 const onResize = entries => {
   entries.forEach(entry => {
     // If breakpoints are defined on the observed element,
     // use them. Otherwise use the defaults.
     const breaksAttr = entry.target.getAttribute('breaks');
     const breakpoints = breaksAttr
-      ? JSON.parse(breaksAttr)
+      ? memoizedJSONParse(breaksAttr)
       : defaultBreakpoints;
 
     // Update the matching breakpoints on the observed element.
@@ -37,6 +45,10 @@ const onResize = entries => {
     );
   });
 };
+
+const defaultBreakpoints = {sm: 384, md: 576, lg: 768, xl: 960};
+const roPropName = '__wc-responsive-container-ro';
+const memoizedJSONParse = memoize(JSON.parse);
 
 // Add responsive behavior to any element
 export const ResponsiveElementMixin = (superclass) =>
