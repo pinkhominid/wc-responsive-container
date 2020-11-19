@@ -43,8 +43,13 @@ const onResize = entries => {
     Object.entries(breakpoints).forEach(([breakpoint, minWidth]) =>
       entry.target.classList[entry.contentRect.width >= minWidth ? 'add' : 'remove'](breakpoint)
     );
+
+    // mark overflown
+    entry.target.classList[isElemOverflown(entry.target) ? 'add' : 'remove']('overflown');
   });
 };
+
+const isElemOverflown = ({ clientWidth, scrollWidth }) => scrollWidth > clientWidth;
 
 const defaultBreakpoints = {sm: 384, md: 576, lg: 768, xl: 960};
 const roPropName = '__wc-responsive-container-ro';
