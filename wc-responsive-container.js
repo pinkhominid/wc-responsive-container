@@ -20,7 +20,7 @@ const debounce = fn => {
         fn.apply(null, args);
         id = null;
       },
-      500
+      200
     );
   };
 };
