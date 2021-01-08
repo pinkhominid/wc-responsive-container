@@ -5,17 +5,23 @@
  *
  * See Philip Walton's Responsive Components: a Solution to the Container Queries Problem
  * https://philipwalton.com/articles/responsive-components-a-solution-to-the-container-queries-problem/
+ *
+ * TODO
+ * - ResizeObserver singleton
  */
 
 const debounce = fn => {
   let id;
   return (...args) => {
-    if(id != null) window.cancelAnimationFrame(id);
+    if(id != null) clearTimeout(id);
 
-    id = window.requestAnimationFrame(() => {
-      fn.apply(this, args);
-      id = null;
-    });
+    id = setTimeout(
+      () => {
+        fn.apply(null, args);
+        id = null;
+      },
+      500
+    );
   };
 };
 
@@ -24,32 +30,76 @@ const memoize = fn => new Proxy(fn, {
   cache: new Map(),
   apply (target, thisArg, argsList) {
     let cacheKey = argsList.toString();
-    if(!this.cache.has(cacheKey))
+    if(!this.cache.has(cacheKey)) {
       this.cache.set(cacheKey, target.apply(thisArg, argsList));
+    }
     return this.cache.get(cacheKey);
   }
 });
 
-const onResize = entries => {
-  entries.forEach(entry => {
-    // If breakpoints are defined on the observed element,
-    // use them. Otherwise use the defaults.
-    const breaksAttr = entry.target.getAttribute('breaks');
-    const breakpoints = breaksAttr
-      ? memoizedJSONParse(breaksAttr)
-      : defaultBreakpoints;
+const onResize = entries =>
+  entries.forEach(entry =>
+    requestAnimationFrame(() => {
+      // If breakpoints are defined on the observed element,
+      // use them. Otherwise use the defaults.
+      const breaksAttr = entry.target.getAttribute('breaks');
+      const breakpoints = breaksAttr
+        ? memoizedJSONParse(breaksAttr)
+        : defaultBreakpoints;
+      const breaksAddList = [];
+      const breaksRemoveList = [];
+      const overflownAddList = [];
+      const overflownRemoveList = [];
 
-    // Update the matching breakpoints on the observed element.
-    Object.entries(breakpoints).forEach(([breakpoint, minWidth]) =>
-      entry.target.classList[entry.contentRect.width >= minWidth ? 'add' : 'remove'](breakpoint)
-    );
+      // Update the matching breakpoints on the observed element
+      Object.entries(breakpoints).forEach(([breakpoint, minWidth]) => {
+        const gteMin = entry.contentRect.width >= minWidth;
+        const hasBreakClass = entry.target.classList.contains(breakpoint);
 
-    // mark overflown
-    entry.target.classList[isElemOverflown(entry.target) ? 'add' : 'remove']('overflown');
-  });
-};
+        if (gteMin && !hasBreakClass) {
+          breaksAddList.push(breakpoint);
+        } else if (!gteMin && hasBreakClass) {
+          breaksRemoveList.push(breakpoint);
+        }
+      });
+      updateClassList(entry.target, breaksRemoveList, breaksAddList);
+
+      // mark overflown (in second pass)
+      const isOverflown = isElemOverflown(entry.target);
+      const hasOverflownClass = entry.target.classList.contains('overflown');
+      if (isOverflown && !hasOverflownClass){
+        overflownAddList.push('overflown');
+      } else if (!isOverflown && hasOverflownClass) {
+        overflownRemoveList.push('overflown');
+      }
+      updateClassList(entry.target, overflownRemoveList, overflownAddList);
+
+      // call event handler, if present
+      if (entry.target.onResize) entry.target.onResize();
+    })
+  );
 
 const isElemOverflown = ({ clientWidth, scrollWidth }) => scrollWidth > clientWidth;
+
+const updateClassList = (target, removeList, addList) => {
+  if (removeList.length) {
+    target.classList.remove(...removeList);
+  }
+  if (addList.length) {
+    target.classList.add(...addList);
+  }
+  forceChildrenLayoutRecalcIfNeeded(target);
+};
+
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+const forceChildrenLayoutRecalcIfNeeded = target => {
+  if (!isSafari) return;
+  // Safari needs this, unfortunately, to refresh it's styling
+  Array.from(target.children).forEach(child => {
+    child.style.zoom = window.getComputedStyle(child).zoom;
+  })
+};
 
 const defaultBreakpoints = {sm: 384, md: 576, lg: 768, xl: 960};
 const roPropName = '__wc-responsive-container-ro';
@@ -61,8 +111,9 @@ export const ResponsiveElementMixin = (superclass) =>
     connectedCallback() {
       if(super.connectedCallback) super.connectedCallback();
 
-      if (!this[roPropName])
+      if (!this[roPropName]) {
         this[roPropName] = new ResizeObserver(debounce(onResize));
+      }
 
       this[roPropName].observe(this);
     }
