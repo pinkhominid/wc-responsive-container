@@ -128,7 +128,8 @@ export class ResponsiveContainerElement extends ResponsiveElementMixin(HTMLEleme
     super.connectedCallback();
     // Default to display block if inline
     // TODO: find a low specificity way w/o extra friction (shadow DOM)
-    if (this.style.display.startsWith('inline')) this.style.display = 'block';
+    if (!this.style.display || this.style.display.startsWith('inline'))
+      this.style.display = 'block';
   }
 }
 
