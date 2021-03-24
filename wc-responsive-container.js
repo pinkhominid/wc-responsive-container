@@ -132,4 +132,8 @@ export class ResponsiveContainerElement extends ResponsiveElementMixin(HTMLEleme
   }
 }
 
-self.customElements.define('wc-responsive-container', ResponsiveContainerElement);
+if (self.customElements.get('wc-responsive-container')) {
+  self.console.warn(`'wc-responsive-container' has already been defined as a custom element`);
+} else {
+  self.customElements.define('wc-responsive-container', ResponsiveContainerElement);
+}
