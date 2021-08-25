@@ -35,6 +35,6 @@
   },
   "homepage": "https://github.com/pinkhominid/wc-responsive-container#readme",
   "devDependencies": {
-    "@web/dev-server": "0.0.17"
+    "@web/dev-server": "^0.1.22"
   }
 }
